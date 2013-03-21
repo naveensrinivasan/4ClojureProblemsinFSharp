@@ -51,4 +51,47 @@ let filterPerfectSquares (s:string) =
                                             let sqrroot = sqr x 
                                             sqrroot > Math.Truncate sqrroot |> not))
 filterPerfectSquares "15,16,25,36,37"                           
-                     
+
+(*
+http://www.4clojure.com/problem/53
+Longest Increasing Sub-Seq
+ 
+Difficulty:	Hard
+Topics:	seqs
+
+Given a vector of integers, find the longest consecutive sub-sequence of increasing numbers. 
+If two sub-sequences have the same length, use the one that occurs first. 
+An increasing sub-sequence must have a length of 2 or greater to qualify.
+
+(= (__ [1 0 1 2 3 0 4 5]) [0 1 2 3])
+(= (__ [5 6 1 3 2 7]) [5 6])
+(= (__ [2 3 3 4 5]) [3 4 5])
+(= (__ [7 6 5 4]) [])
+
+*)
+
+let rec longestincreasingsubseq l innerlist (previousnumber:Option<int>) lastsuccess=
+    match l with
+    |head::tail  when previousnumber.IsNone -> longestincreasingsubseq tail innerlist  (Some(head)) lastsuccess
+    |head::tail  when previousnumber.Value = (head - 1)  -> 
+        longestincreasingsubseq tail ((previousnumber.Value::innerlist.Head)::innerlist.Tail)  (Some(head)) true
+    |head::tail  -> match lastsuccess  with
+                      |true -> longestincreasingsubseq tail ([]::(previousnumber.Value::innerlist.Head)::innerlist.Tail) (Some(head)) false
+                      |_ -> longestincreasingsubseq tail ([]::innerlist) (Some(head)) false
+    |_ -> 
+        let list =  match lastsuccess  with
+                      |true  -> (previousnumber.Value::innerlist.Head)::innerlist.Tail
+                      |_ -> innerlist
+        list |> 
+        List.map(fun x -> List.rev x) |>
+        List.maxBy(fun x-> List.length x) 
+         
+let seq = [1;0;1;2;3;0;4;5]
+let o = longestincreasingsubseq seq [[]] None false
+let seq1 = [5;6;1;3;2;7]
+let r = longestincreasingsubseq seq1 [[]] None false
+let seq2 = [2;3;3;4;5]
+let g = longestincreasingsubseq seq2 [[]] None false
+let seq3 = [7;6;5;4]
+let q = longestincreasingsubseq seq3 [[]] None false
+
