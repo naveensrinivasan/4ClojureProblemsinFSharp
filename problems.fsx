@@ -87,11 +87,45 @@ let rec longestincreasingsubseq l innerlist (previousnumber:Option<int>) lastsuc
         List.maxBy(fun x-> List.length x) 
          
 let seq = [1;0;1;2;3;0;4;5]
-let o = longestincreasingsubseq seq [[]] None false
+printfn "%A" (longestincreasingsubseq seq [[]] None false)
 let seq1 = [5;6;1;3;2;7]
-let r = longestincreasingsubseq seq1 [[]] None false
+printfn "%A"(longestincreasingsubseq seq1 [[]] None false)
 let seq2 = [2;3;3;4;5]
-let g = longestincreasingsubseq seq2 [[]] None false
+printfn "%A"(longestincreasingsubseq seq2 [[]] None false)
 let seq3 = [7;6;5;4]
-let q = longestincreasingsubseq seq3 [[]] None false
+printfn "%A" (longestincreasingsubseq seq3 [[]] None false)
+(* 
+http://www.4clojure.com/problem/77
 
+Anagram Finder
+ 
+Difficulty:	Medium
+Topics:	
+Write a function which finds all the anagrams in a vector of words. 
+A word x is an anagram of word y if all the letters in x can be rearranged in a different order to form y. 
+Your function should return a set of sets, where each sub-set is a group of words which are anagrams of each other. 
+Each sub-set should have at least two words. Words without any anagrams should not be included in the result.
+	
+
+(= (__ ["meat" "mat" "team" "mate" "eat"])
+   #{#{"meat" "team" "mate"}})
+	
+
+(= (__ ["veer" "lake" "item" "kale" "mite" "ever"])
+   #{#{"veer" "ever"} #{"lake" "kale"} #{"mite" "item"}})
+
+
+*)
+
+let rec anagramfider (l:seq<string>)=
+         l|> Seq.map(fun s -> ((s.ToCharArray() 
+                                |> Array.map(fun x -> Convert.ToInt32(x)) 
+                                |> Array.fold(fun acc x -> acc+x) 0 )),s)
+           |> Seq.groupBy fst
+           |> Seq.filter( fun x ->  (Seq.length (snd(x))) > 1)
+           |> Seq.map(fun x -> snd(x) |> Seq.map(fun y -> snd(y)))
+
+let anagrams = ["meat";"mat";"team";"mate";"eat"]
+let anagrams2 = ["veer";"lake";"item";"kale";"mite";"ever"]
+printfn "%A" (anagramfider anagrams) 
+printfn "%A" (anagramfider anagrams2) 
