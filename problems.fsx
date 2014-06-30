@@ -85,7 +85,7 @@ let rec longestincreasingsubseq l innerlist (previousnumber:Option<int>) lastsuc
         list |> 
         List.map(fun x -> List.rev x) |>
         List.maxBy(fun x-> List.length x) 
-         
+
 let seq = [1;0;1;2;3;0;4;5]
 printfn "%A" (longestincreasingsubseq seq [[]] None false)
 let seq1 = [5;6;1;3;2;7]
