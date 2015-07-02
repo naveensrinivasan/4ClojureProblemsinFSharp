@@ -129,3 +129,43 @@ let anagrams = ["meat";"mat";"team";"mate";"eat"]
 let anagrams2 = ["veer";"lake";"item";"kale";"mite";"ever"]
 printfn "%A" (anagramfider anagrams) 
 printfn "%A" (anagramfider anagrams2) 
+
+(* 
+https://www.4clojure.com/problem/67
+Prime Numbers
+ 
+Difficulty:	Medium
+Topics:	primes
+
+
+Write a function which returns the first x number of prime numbers.
+test not run	
+
+(= (__ 2) [2 3])
+test not run	
+
+(= (__ 5) [2 3 5 7 11])
+test not run	
+
+(= (last (__ 100)) 541)
+*)
+
+let prime x =
+    let rec inner counter=
+        match counter < x with
+        |true when ((x % counter) <> 0) -> (inner (counter + 1))
+        |true -> (x, false)
+        | _ -> (x,(x % counter = 0))
+    inner 2
+let getprimes howmany =
+    let rec inner start list=
+        match  (List.length list) < howmany with
+        |true ->
+            let isprime = prime start
+            if (snd isprime) then ( inner (start+ 1) (fst(isprime)::list)) else (inner (start+1) list)
+        |_ -> list |> List.rev
+    inner 2 []
+
+getprimes 2 
+getprimes 5
+getprimes 100 |> List.last
