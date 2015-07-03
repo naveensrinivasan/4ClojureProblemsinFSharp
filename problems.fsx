@@ -169,3 +169,36 @@ let getprimes howmany =
 getprimes 2 
 getprimes 5
 getprimes 100 |> List.last
+
+(*
+A number is "perfect" if the sum of its divisors equal the number itself. 6 is a perfect number because 1+2+3=6. Write a function which returns true for perfect numbers and false otherwise.
+test not run	
+
+(= (__ 6) true)
+test not run	
+
+(= (__ 7) false)
+test not run	
+
+(= (__ 496) true)
+test not run	
+
+(= (__ 500) false)
+test not run	
+
+(= (__ 8128) true)
+
+*)
+let isPerfectNumber x =
+    let rec getdivisors counter list=
+        match counter < x with
+        |true when (x % counter = 0) -> getdivisors (counter+1) (counter::list)
+        |true -> getdivisors (counter+1) list
+        |_ -> list
+    let divisors = getdivisors 1 [] |> List.reduce (+)
+    if (divisors= x) then true else false
+
+isPerfectNumber 6
+isPerfectNumber 7
+isPerfectNumber 496
+
