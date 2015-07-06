@@ -142,10 +142,8 @@ Write a function which returns the first x number of prime numbers.
 test not run	
 
 (= (__ 2) [2 3])
-test not run	
 
 (= (__ 5) [2 3 5 7 11])
-test not run	
 
 (= (last (__ 100)) 541)
 *)
@@ -202,3 +200,34 @@ isPerfectNumber 6
 isPerfectNumber 7
 isPerfectNumber 496
 
+(*
+https://www.4clojure.com/problem/70
+Word Sorting
+ 
+Difficulty:	Medium
+Topics:	sorting
+
+
+Write a function that splits a sentence up into a sorted list of words. Capitalization should not affect sort order and punctuation should be ignored.
+test not run	
+
+(= (__  "Have a nice day.")
+   ["a" "day" "Have" "nice"])
+test not run	
+
+(= (__  "Clojure is a fun language!")
+   ["a" "Clojure" "fun" "is" "language"])
+test not run	
+
+(= (__  "Fools fall for foolish follies.")
+   ["fall" "follies" "foolish" "Fools" "for"])
+*)
+let wordSorting sentence =
+    let rgx = new System.Text.RegularExpressions.Regex("[^a-zA-Z ]")
+    let comparer = System.Collections.Generic.Comparer<string>.Default
+    let filtered = rgx.Replace(sentence, "")
+    filtered.Split([|' '|]) |> Array.sortWith(fun x y -> comparer.Compare(x,y))
+
+wordSorting "Fools fall for foolish follies."
+wordSorting "Have a nice day."  
+wordSorting "Clojure is a fun language!"
